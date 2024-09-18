@@ -35,7 +35,7 @@ public class Movement : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
         Vector3 moveDir = new Vector3(x, 0, y);
-        rb.velocity = moveDir * speed;
+        rb.linearVelocity = moveDir * speed;
 
         if(x!=0 && x>0)
         {
