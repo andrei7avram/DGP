@@ -49,7 +49,7 @@ public class Movement : MonoBehaviour
                 moveDir.y = -1;
             }
         }
-        rb.linearVelocity = moveDir * speed;
+        rb.velocity = moveDir * speed;
 
         if(x!=0 && x>0)
         {
