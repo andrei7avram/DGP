@@ -4,20 +4,18 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public float speed;
-    public float groundDist;
-
-    public LayerMask groundMask;
-    public Rigidbody rb;
-    public SpriteRenderer sr;
-
-    public bool isUnderwater = false;
-
-    void Start()
-    {
-    }
-
-    
+    [SerializeField]
+    private float speed;
+    [SerializeField]
+    private float groundDist;
+    [SerializeField]
+    private LayerMask groundMask;
+    [SerializeField]
+    private Rigidbody rb;
+    [SerializeField]
+    private SpriteRenderer sr;
+    [SerializeField]
+    private bool isUnderwater = false;
     void FixedUpdate()
     {
         RaycastHit hit;
@@ -40,7 +38,7 @@ public class Movement : MonoBehaviour
         if(isUnderwater)
         {
             speed = 5;
-            rb.useGravity = false;
+            
             if(Input.GetKey(KeyCode.Space))
             {
                 moveDir.y = 1;
@@ -68,6 +66,7 @@ public class Movement : MonoBehaviour
         if(LayerMask.LayerToName(other.gameObject.layer) == "Water")
         {
             isUnderwater = true;
+            rb.useGravity = false;
             Debug.Log("Underwater");
         }
     }
@@ -77,6 +76,7 @@ public class Movement : MonoBehaviour
         if(LayerMask.LayerToName(other.gameObject.layer) == "Water")
         {
             isUnderwater = false;
+            rb.useGravity = true;
             Debug.Log("Not Underwater");
         }
     }
