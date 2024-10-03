@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class BillBoarding : MonoBehaviour
 {
-   public Camera mainCamera;
+   private Camera mainCamera;
 
 void Start()
 {
     mainCamera = Camera.main;
+     Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible = false;
+
 }
 
 void LateUpdate()
