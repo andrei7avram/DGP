@@ -154,6 +154,17 @@ namespace DialogueEditor
             SetState(eState.TransitioningDialogueBoxOn);
         }
 
+        public void FakeStartConversation(NPCConversation conversation)
+        {
+            m_conversation = conversation.Deserialize();
+            if (OnConversationStarted != null)
+                OnConversationStarted.Invoke();
+
+            TurnOffUI();
+            m_currentSpeech = m_conversation.Root;
+            SetState(eState.TransitioningDialogueBoxOn);
+        }
+
         public void EndConversation()
         {
             SetState(eState.TransitioningDialogueOff);
@@ -840,7 +851,6 @@ namespace DialogueEditor
                 }
             }
         }
-
         private void LogWarning(string warning)
         {
 #if UNITY_EDITOR
