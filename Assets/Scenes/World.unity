@@ -513,7 +513,7 @@ GameObject:
   - component: {fileID: 87629035}
   m_Layer: 6
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -4654,6 +4654,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1866225232950626166, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 1584563834}
+    - target: {fileID: 1866225232950626166, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+      propertyPath: movement
+      value: 
+      objectReference: {fileID: 1584563832}
+    - target: {fileID: 1866225232950626166, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+      propertyPath: lungeForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866225232950626166, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+      propertyPath: upwardForce
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866225232950626166, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 3468068769310929656, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
       propertyPath: m_LocalPosition.x
       value: 454.12
@@ -4705,6 +4725,14 @@ PrefabInstance:
     - target: {fileID: 3819680181121751765, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
       propertyPath: far clip plane
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 4736173201503100524, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: b92c1169dacc1a34483fb0bc6d4eb021, type: 3}
+    - target: {fileID: 7014050234677308089, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+      propertyPath: jumpForce
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5978,6 +6006,22 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: fa2e670bb3648a84b9df8d16da25b85e, type: 3}
   m_PrefabInstance: {fileID: 1151737035}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1584563832 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7014050234677308089, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+  m_PrefabInstance: {fileID: 1321589115}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39b680dea9ebf9f418c583477a88fd5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!54 &1584563834 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 1046698277140301200, guid: 1b4f076e1f623e24592aa173422a7859, type: 3}
+  m_PrefabInstance: {fileID: 1321589115}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &1591324372 stripped
 Transform:

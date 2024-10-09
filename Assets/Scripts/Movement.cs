@@ -1,87 +1,3 @@
-/*using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Movement : MonoBehaviour
-{
-    [SerializeField]
-    private float speed;
-    [SerializeField]
-    private float groundDist;
-    [SerializeField]
-    private LayerMask groundMask;
-    [SerializeField]
-    private Rigidbody rb;
-    [SerializeField]
-    private SpriteRenderer sr;
-    [SerializeField]
-    private bool isUnderwater = false;
-    void FixedUpdate()
-    {
-        RaycastHit hit;
-        Vector3 castPos = transform.position;
-        castPos.y += 1f;
-
-        if(Physics.Raycast(castPos, -transform.up, out hit, Mathf.Infinity, groundMask) && !isUnderwater)
-        {
-           if(hit.collider != null) {
-            Vector3 movePos = transform.position;
-            movePos.y = hit.point.y + groundDist;
-            transform.position = movePos;
-
-           }
-        }
-
-        float x = Input.GetAxis("Horizontal");
-        float y = Input.GetAxis("Vertical");
-        Vector3 moveDir = new Vector3(x, 0, y);
-        if(isUnderwater)
-        {
-            speed = 5;
-            
-            if(Input.GetKey(KeyCode.Space))
-            {
-                moveDir.y = 1;
-            }else if(Input.GetKey(KeyCode.LeftControl))
-            {
-                moveDir.y = -1;
-            }
-        }
-        rb.velocity = moveDir * speed;
-
-        if(x!=0 && x>0)
-        {
-            sr.flipX = false;
-        }
-        else if(x!=0 && x<0)
-        {
-            sr.flipX = true;
-        }
-
-        
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if(LayerMask.LayerToName(other.gameObject.layer) == "Water")
-        {
-            isUnderwater = true;
-            rb.useGravity = false;
-            Debug.Log("Underwater");
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if(LayerMask.LayerToName(other.gameObject.layer) == "Water")
-        {
-            isUnderwater = false;
-            rb.useGravity = true;
-            Debug.Log("Not Underwater");
-        }
-    }
-
-}*/
 
 using UnityEngine;
 
@@ -97,12 +13,19 @@ public class Movement : MonoBehaviour
     [SerializeField]
     private SpriteRenderer sr;
 
+    public Sprite[] directionSprites;
+
     private bool isUnderwater = false;
     private Vector3 moveDirection = Vector3.zero;
-    private bool isGrounded = false;
+    public bool isGrounded = false;
     private float cameraPitch = 0.0f;
 
     public float underwaterGravityMultiplier = 0.3f;
+    public float jumpForce = 5.0f;
+    public bool isJumping = false;
+    private float jumpTimeCounter = 0.0f;
+
+    public float jumpDuration = 0.2f;
 
     void Start()
 {
@@ -110,6 +33,42 @@ public class Movement : MonoBehaviour
     if (cameraTransform == null)
     {
         cameraTransform = Camera.main.transform;
+    }
+}
+
+void UpdateSpriteDirection(float moveX, float moveZ)
+{
+    if (moveX > 0 && moveZ > 0)
+    {
+        sr.sprite = directionSprites[1]; // Facing top-right
+    }
+    else if (moveX > 0 && moveZ < 0)
+    {
+        sr.sprite = directionSprites[4]; // Facing bottom-right
+    }
+    else if (moveX < 0 && moveZ > 0)
+    {
+        sr.sprite = directionSprites[1]; // Facing top-left
+    }
+    else if (moveX < 0 && moveZ < 0)
+    {
+        sr.sprite = directionSprites[5]; // Facing bottom-left
+    }
+    else if (moveX > 0)
+    {
+        sr.sprite = directionSprites[2]; // Facing right
+    }
+    else if (moveX < 0)
+    {
+        sr.sprite = directionSprites[3]; // Facing left
+    }
+    else if (moveZ > 0)
+    {
+        sr.sprite = directionSprites[1]; // Facing up
+    }
+    else if (moveZ < 0)
+    {
+        sr.sprite = directionSprites[0]; // Facing down
     }
 }
 
@@ -121,6 +80,8 @@ void Update()
 
     Vector3 move = transform.right * moveX + transform.forward * moveZ;
     moveDirection = move * playerSpeed;
+
+    UpdateSpriteDirection(moveX, moveZ);
 
     // Apply gravity or buoyancy
     if (isUnderwater)
@@ -141,27 +102,28 @@ void Update()
     }
     else
     {
+        Debug.Log(isGrounded);
         if (!isGrounded)
         {
             moveDirection.y = rb.velocity.y - gravityForce * Time.deltaTime;
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.Space) && isGrounded) // Check for jump input
         {
-            moveDirection.y = rb.velocity.y; // Preserve the current vertical velocity when grounded
+            isJumping = true;
+            jumpTimeCounter = 0.0f;
+            Debug.Log("Jumping");
         }
     }
-
-    // Move the player
     rb.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
 
-    if (moveX > 0)
-    {
-        sr.flipX = false; // Facing right
-    }
-    else if (moveX < 0)
-    {
-        sr.flipX = true; // Facing left
-    }
+    //if (moveX > 0)
+    //{
+       // sr.flipX = false; // Facing right
+    //}
+    //else if (moveX < 0)
+    //{
+       //sr.flipX = true; // Facing left
+    //}
 
     // Handle camera rotation
     float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
@@ -175,7 +137,23 @@ void Update()
     transform.Rotate(Vector3.up * mouseX);
 }
 
-void OnCollisionStay(Collision collision)
+void FixedUpdate()
+{
+    if (isJumping)
+    {
+        if (jumpTimeCounter < jumpDuration)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Acceleration);
+            jumpTimeCounter += Time.fixedDeltaTime;
+        }
+        else
+        {
+            isJumping = false;
+        }
+    }
+}
+
+void OnCollisionEnter(Collision collision)
 {
     if (collision.gameObject.CompareTag("Ground"))
     {
