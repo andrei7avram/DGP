@@ -106,7 +106,18 @@ MonoBehaviour:
   cameraTransform: {fileID: 3380048493458784765}
   rb: {fileID: 1046698277140301200}
   sr: {fileID: 4736173201503100524}
+  directionSprites:
+  - {fileID: 21300000, guid: 63dc007fee004304bb424aa823b642f9, type: 3}
+  - {fileID: 21300000, guid: b92c1169dacc1a34483fb0bc6d4eb021, type: 3}
+  - {fileID: 21300000, guid: 0cf46b82242edf745a19a095a1dbc586, type: 3}
+  - {fileID: 21300000, guid: be871ba3f9595844cbfca8ee19888230, type: 3}
+  - {fileID: 21300000, guid: 510add1a97aecd64d913f6bcaea21662, type: 3}
+  - {fileID: 21300000, guid: 0eb4b3847024bd245886c5125a377b74, type: 3}
+  isGrounded: 0
   underwaterGravityMultiplier: 0.9
+  jumpForce: 5
+  isJumping: 0
+  jumpDuration: 0.2
 --- !u!114 &1866225232950626166
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,6 +135,13 @@ MonoBehaviour:
   lungeForce: 4
   upwardForce: 1
   lungeDuration: 0.5
+  groundCheckDistance: 1.5
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  movement: {fileID: 0}
+  rb: {fileID: 0}
+  isDashing: 0
 --- !u!1 &6935739666392081108
 GameObject:
   m_ObjectHideFlags: 0
@@ -334,7 +352,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: de166239a7647b64d8b7a7683d3d876e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b92c1169dacc1a34483fb0bc6d4eb021, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
