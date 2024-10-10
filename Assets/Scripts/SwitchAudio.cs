@@ -6,7 +6,7 @@ public class SwitchAudio : MonoBehaviour
 {
     public AudioSource audioSourceA; // First audio source
     public AudioSource audioSourceB; // Second audio source
-    public float fadeDuration = 3.0f; // Duration for fade in/out
+    public float fadeDuration = 3.0f; // Common fade duration for both sources
 
     private Coroutine fadeCoroutine; // To track the current fade coroutine
 
@@ -14,6 +14,12 @@ public class SwitchAudio : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            // If a fade is currently in progress, stop it immediately
+            if (fadeCoroutine != null)
+            {
+                StopCoroutine(fadeCoroutine); // Stop any ongoing fade or switch
+            }
+
             // Check which audio source is currently playing
             if (audioSourceA.isPlaying)
             {
@@ -27,7 +33,7 @@ public class SwitchAudio : MonoBehaviour
             }
             else
             {
-                // If neither is playing, start playing audioSourceA and fade in
+                // If neither is playing, start playing audioSourceA and fade it in
                 StartFadeIn(audioSourceA); // Line 29
             }
         }
@@ -37,6 +43,7 @@ public class SwitchAudio : MonoBehaviour
     {
         // Stop the current fade coroutine if it's running
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
+
         // Start the switch process
         fadeCoroutine = StartCoroutine(SwitchAudioCoroutine(oldAudioSource, newAudioSource, fadeDuration)); // Line 38
     }
@@ -45,7 +52,8 @@ public class SwitchAudio : MonoBehaviour
     {
         // Stop the current fade coroutine if it's running
         if (fadeCoroutine != null) StopCoroutine(fadeCoroutine);
-        // Start the fade in process
+
+        // Start the fade-in process
         fadeCoroutine = StartCoroutine(FadeIn(audioSource, fadeDuration)); // Line 45
     }
 
