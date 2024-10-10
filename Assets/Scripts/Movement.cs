@@ -13,6 +13,8 @@ public class Movement : MonoBehaviour
     [SerializeField]
     private SpriteRenderer sr;
 
+    public Animator animator;
+
     public Sprite[] directionSprites;
 
     private bool isUnderwater = false;
@@ -28,13 +30,13 @@ public class Movement : MonoBehaviour
     public float jumpDuration = 0.2f;
 
     void Start()
-{
-    rb = GetComponent<Rigidbody>();
-    if (cameraTransform == null)
     {
-        cameraTransform = Camera.main.transform;
+        rb = GetComponent<Rigidbody>();
+        if (cameraTransform == null)
+        {
+            cameraTransform = Camera.main.transform;
+        }
     }
-}
 
 void UpdateSpriteDirection(float moveX, float moveZ)
 {
@@ -68,7 +70,7 @@ void UpdateSpriteDirection(float moveX, float moveZ)
     }
     else if (moveZ < 0)
     {
-        sr.sprite = directionSprites[0]; // Facing down
+        // animator.SetBool("S_Pressed", true); // Facing down
     }
 }
 
@@ -82,6 +84,32 @@ void Update()
     moveDirection = move * playerSpeed;
 
     UpdateSpriteDirection(moveX, moveZ);
+
+    // Modify variables for animation
+    if (Input.GetKeyDown(KeyCode.W)) {
+        animator.SetBool("W_Pressed", true);
+    }
+    if (Input.GetKeyDown(KeyCode.A)) {
+        animator.SetBool("A_Pressed", true);
+    }
+    if (Input.GetKeyDown(KeyCode.S)) {
+        animator.SetBool("S_Pressed", true);
+    }
+    if (Input.GetKeyDown(KeyCode.D)) {
+        animator.SetBool("D_Pressed", true);
+    }
+    if (Input.GetKeyUp(KeyCode.W)) {
+        animator.SetBool("W_Pressed", false);
+    }
+    if (Input.GetKeyUp(KeyCode.A)) {
+        animator.SetBool("A_Pressed", false);
+    }
+    if (Input.GetKeyUp(KeyCode.S)) {
+        animator.SetBool("S_Pressed", false);
+    }
+    if (Input.GetKeyUp(KeyCode.D)) {
+        animator.SetBool("D_Pressed", false);
+    }
 
     // Apply gravity or buoyancy
     if (isUnderwater)
@@ -187,6 +215,12 @@ void OnTriggerExit(Collider other)
         
         Debug.Log("Out of Water");
     }
+}
+
+void playAnimation(AnimationClip animationClip) {
+    AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
+    overrideController["BaseAnimation"] = animationClip;
+    animator.runtimeAnimatorController = overrideController;
 }
 }
 
