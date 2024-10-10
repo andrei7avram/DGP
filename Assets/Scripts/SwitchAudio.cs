@@ -6,7 +6,7 @@ public class SwitchAudio : MonoBehaviour
 {
     public AudioSource audioSourceA; // First audio source
     public AudioSource audioSourceB; // Second audio source
-    public float fadeDuration = 5.0f; // Duration for fade in/out
+    public float fadeDuration = 3.0f; // Duration for fade in/out
 
     private Coroutine fadeCoroutine; // To track the current fade coroutine
 
