@@ -15,6 +15,8 @@ public class Movement : MonoBehaviour
 
     public Animator animator;
 
+    public ParticleSystem particles;
+
     public Sprite[] directionSprites;
 
     private bool isUnderwater = false;
@@ -31,6 +33,9 @@ public class Movement : MonoBehaviour
 
     void Start()
     {
+        var emission = particles.emission;
+        emission.enabled = false;
+        
         rb = GetComponent<Rigidbody>();
         if (cameraTransform == null)
         {
@@ -38,52 +43,25 @@ public class Movement : MonoBehaviour
         }
     }
 
-void UpdateSpriteDirection(float moveX, float moveZ)
-{
-    if (moveX > 0 && moveZ > 0)
-    {
-        sr.sprite = directionSprites[1]; // Facing top-right
-    }
-    else if (moveX > 0 && moveZ < 0)
-    {
-        sr.sprite = directionSprites[4]; // Facing bottom-right
-    }
-    else if (moveX < 0 && moveZ > 0)
-    {
-        sr.sprite = directionSprites[1]; // Facing top-left
-    }
-    else if (moveX < 0 && moveZ < 0)
-    {
-        sr.sprite = directionSprites[5]; // Facing bottom-left
-    }
-    else if (moveX > 0)
-    {
-        sr.sprite = directionSprites[2]; // Facing right
-    }
-    else if (moveX < 0)
-    {
-        sr.sprite = directionSprites[3]; // Facing left
-    }
-    else if (moveZ > 0)
-    {
-        sr.sprite = directionSprites[1]; // Facing up
-    }
-    else if (moveZ < 0)
-    {
-        // animator.SetBool("S_Pressed", true); // Facing down
-    }
-}
-
 void Update()
 {
     // Handle player movement
     float moveX = Input.GetAxis("Horizontal");
     float moveZ = Input.GetAxis("Vertical");
 
+    // Make particles
+    ParticleSystem.EmissionModule emission = particles.emission;
+    if(isGrounded) {
+        if (moveX != 0 || moveZ != 0) {
+            emission.enabled = true;
+        } else {
+            emission.enabled = false;
+        }
+    }
+
     Vector3 move = transform.right * moveX + transform.forward * moveZ;
     moveDirection = move * playerSpeed;
 
-    UpdateSpriteDirection(moveX, moveZ);
 
     // Modify variables for animation
     if (Input.GetKeyDown(KeyCode.W)) {
@@ -221,12 +199,6 @@ void OnTriggerExit(Collider other)
         
         Debug.Log("Out of Water");
     }
-}
-
-void playAnimation(AnimationClip animationClip) {
-    AnimatorOverrideController overrideController = new AnimatorOverrideController(animator.runtimeAnimatorController);
-    overrideController["BaseAnimation"] = animationClip;
-    animator.runtimeAnimatorController = overrideController;
 }
 }
 
