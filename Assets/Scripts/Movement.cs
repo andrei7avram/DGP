@@ -110,6 +110,12 @@ void Update()
     if (Input.GetKeyUp(KeyCode.D)) {
         animator.SetBool("D_Pressed", false);
     }
+    if (Input.GetKeyDown(KeyCode.Space)) {
+        animator.SetBool("Space_Pressed", true);
+    }
+    if (Input.GetKeyUp(KeyCode.Space)) {
+        animator.SetBool("Space_Pressed", false);
+    }
 
     // Apply gravity or buoyancy
     if (isUnderwater)
