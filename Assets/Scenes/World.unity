@@ -322,7 +322,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 0.14
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -3265,7 +3265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myConv: {fileID: 2071929320}
   obj: {fileID: 1277398993}
-  convManagerInst: {fileID: 0}
+  convManagerInst: {fileID: 1185209102}
 --- !u!65 &1234547421
 BoxCollider:
   m_ObjectHideFlags: 0
