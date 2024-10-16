@@ -31,6 +31,8 @@ public class Movement : MonoBehaviour
 
     public float jumpDuration = 0.2f;
 
+    public PlayerAttack playerStats;
+
     void Start()
     {
         var emission = particles.emission;
@@ -126,16 +128,14 @@ void Update()
             Debug.Log("Jumping");
         }
     }
-    rb.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+    if(playerStats.isDashing) { 
+        rb.velocity = new Vector3(rb.velocity.x, moveDirection.y, rb.velocity.z);
+    }else {
+        rb.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
+    }
+    
 
-    //if (moveX > 0)
-    //{
-       // sr.flipX = false; // Facing right
-    //}
-    //else if (moveX < 0)
-    //{
-       //sr.flipX = true; // Facing left
-    //}
+    
 
     // Handle camera rotation
     float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
@@ -186,7 +186,7 @@ void OnTriggerEnter(Collider other)
     if (LayerMask.LayerToName(other.gameObject.layer) == "Water")
     {
         isUnderwater = true;
-        
+        Debug.Log("Underwater");
         
     }
 }
@@ -196,6 +196,7 @@ void OnTriggerExit(Collider other)
     if (LayerMask.LayerToName(other.gameObject.layer) == "Water")
     {
         isUnderwater = false;
+        Debug.Log("Not underwater");
         
         
     }

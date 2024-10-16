@@ -40,21 +40,21 @@ public class PlayerAttack : MonoBehaviour
     {
         // Only allow attacking if the turtle is grounded
         if (Input.GetMouseButtonDown(0) && canAttack)
-        {
+        {   
+            canAttack = false;
             StartCoroutine(AttackEnemy());
         }
     }
 
     IEnumerator AttackEnemy()
     {
-        canAttack = false;
-
         //GetComponent<Collider>().material = noFrictionMaterial;
 
         Vector3 lungeDirection = CalculateLungeDirection();
         if(!movement.isGrounded) 
         {
             isDashing = true;
+            rb.AddForce(lungeDirection, ForceMode.Impulse);
             dashTimeCounter = 0f;
         }
 
@@ -76,13 +76,13 @@ public class PlayerAttack : MonoBehaviour
         {   
             if (movement.isGrounded)
             {
-                rb.velocity = new Vector3(0, rb.velocity.y, 0);
+                //rb.velocity = new Vector3(0, rb.velocity.y, 0);
                 isDashing = false;
             }
             if (dashTimeCounter < lungeDuration)
             {
                 Vector3 lungeDirection = CalculateLungeDirection();
-                rb.AddForce(lungeDirection * (Time.fixedDeltaTime / lungeDuration), ForceMode.VelocityChange);
+                //rb.AddForce(lungeDirection * (Time.fixedDeltaTime / lungeDuration), ForceMode.VelocityChange);
                 dashTimeCounter += Time.fixedDeltaTime;
             }
             else

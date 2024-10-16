@@ -271,7 +271,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4881025981463364070}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 454.12, y: 397.572, z: 40}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -290,7 +290,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4881025981463364070}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 10
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -364,6 +364,7 @@ MonoBehaviour:
   jumpForce: 50
   isJumping: 0
   jumpDuration: 0.2
+  playerStats: {fileID: 7048830633445456472}
 --- !u!114 &7048830633445456472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +379,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPrefab: {fileID: 7248834969499271338}
   attackCooldown: 0.5
-  lungeForce: 200
+  lungeForce: 50
   upwardForce: 0
   lungeDuration: 0.5
   groundCheckDistance: 1.5
@@ -690,6 +691,10 @@ PrefabInstance:
     - target: {fileID: 2915827312882785290, guid: b655378ca4c3b09488c5206ff0314d02, type: 3}
       propertyPath: m_Name
       value: attackCapsule
+      objectReference: {fileID: 0}
+    - target: {fileID: 2915827312882785290, guid: b655378ca4c3b09488c5206ff0314d02, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 2915827312882785290, guid: b655378ca4c3b09488c5206ff0314d02, type: 3}
       propertyPath: m_IsActive
