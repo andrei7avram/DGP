@@ -12,10 +12,16 @@ public class EnemyAi : MonoBehaviour
     bool walkPointSet;
     public float walkPointRange;
 
+    public GameObject meleeAttack;
+
     public float timeBetweenAttacks;
     bool alreadyAttacked;
 
+    Vector3 distanceToPlayer;
+
     public Animator animator;
+
+    public bool meleeAttackActive = false;
 
     //Attacks
     public GameObject projectile;
@@ -31,6 +37,8 @@ public class EnemyAi : MonoBehaviour
     private void Update() {
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
+
+        distanceToPlayer = transform.position - player.position;
 
         if (!playerInSightRange && !playerInAttackRange) Patrolling();
         if (playerInSightRange && !playerInAttackRange) Chasing();
@@ -61,23 +69,50 @@ public class EnemyAi : MonoBehaviour
     }
 
     private void Attacking() {
+
+        if (meleeAttackActive) {
+            Debug.Log("Melee Attack Hit");
+            Debug.Log(distanceToPlayer.magnitude);
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            meleeAttackActive = false;
+        }
         animator.SetBool("crab_move" , false);
         animator.SetBool("crab_idle", true);
         agent.SetDestination(transform.position);
         transform.LookAt(player);
 
         if (!alreadyAttacked) {
-            Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-            Rigidbody rb = Instantiate(projectile, projectilePosition, Quaternion.identity).GetComponent<Rigidbody>();
-            rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
-            rb.AddForce(transform.up * 2f, ForceMode.Impulse);
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            int attackType = Random.Range(0, 2);
+            if (attackType == 0) {
+                Debug.Log("Projectile Attack");
+                Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+                Rigidbody rb = Instantiate(projectile, projectilePosition, Quaternion.identity).GetComponent<Rigidbody>();
+                rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
+                rb.AddForce(transform.up * 2f, ForceMode.Impulse);
+                alreadyAttacked = true;
+                Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            }else {
+                Debug.Log("Melee Attack");
+                meleeAttack.GetComponent<Collider>().enabled = true;
+                attackRange = 1f;
+                meleeAttackActive = true;
+
+            }
+            
         }
+    }
+
+    IEnumerator MeleeAttack() {
+        yield return new WaitForSeconds(1f);
+        meleeAttack.GetComponent<Collider>().enabled = true;
+        Invoke(nameof(ResetAttack), timeBetweenAttacks);
     }
 
     private void ResetAttack() {
         alreadyAttacked = false;
+        meleeAttack.GetComponent<Collider>().enabled = false;
+        attackRange = 7.9f;
     }
 
     private void OnDrawGizmosSelected() {

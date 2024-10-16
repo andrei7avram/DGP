@@ -24,11 +24,11 @@ public class Stats : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision) {
+    void OnTriggerEnter(Collider collision) {
         if (collision.gameObject.tag == "Projectile") {
             TakeDamage(30);
             Destroy(collision.gameObject);
-        }else if (collision.gameObject.tag == "Attack") {
+        }else if (collision.gameObject.tag == "EnemyAttack") {
             TakeDamage(10);
         }else if (collision.gameObject.tag == "Hazard") {
             TakeDamage(20);
