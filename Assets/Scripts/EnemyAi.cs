@@ -15,6 +15,8 @@ public class EnemyAi : MonoBehaviour
     public float timeBetweenAttacks;
     bool alreadyAttacked;
 
+    public Animator animator;
+
     //Attacks
     public GameObject projectile;
 
@@ -36,6 +38,8 @@ public class EnemyAi : MonoBehaviour
     }
 
     private void Patrolling() {
+        animator.SetBool("crab_idle" , false);
+        animator.SetBool("crab_move" , true);
         if (!walkPointSet) SearchWalkPoint();
 
         if (walkPointSet) agent.SetDestination(walkPoint);
@@ -57,12 +61,14 @@ public class EnemyAi : MonoBehaviour
     }
 
     private void Attacking() {
+        animator.SetBool("crab_move" , false);
+        animator.SetBool("crab_idle", true);
         agent.SetDestination(transform.position);
         transform.LookAt(player);
 
         if (!alreadyAttacked) {
-
-            Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
+            Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+            Rigidbody rb = Instantiate(projectile, projectilePosition, Quaternion.identity).GetComponent<Rigidbody>();
             rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
             rb.AddForce(transform.up * 2f, ForceMode.Impulse);
             alreadyAttacked = true;

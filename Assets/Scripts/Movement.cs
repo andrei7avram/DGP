@@ -114,7 +114,7 @@ void Update()
     }
     else
     {
-        Debug.Log(isGrounded);
+        
         if (!isGrounded)
         {
             moveDirection.y = rb.velocity.y - gravityForce * Time.deltaTime;
@@ -187,7 +187,7 @@ void OnTriggerEnter(Collider other)
     {
         isUnderwater = true;
         
-        Debug.Log("Underwater");
+        
     }
 }
 
@@ -197,7 +197,7 @@ void OnTriggerExit(Collider other)
     {
         isUnderwater = false;
         
-        Debug.Log("Out of Water");
+        
     }
 }
 }
