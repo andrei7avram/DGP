@@ -5,18 +5,21 @@ using UnityEngine;
 public class CageOpener : MonoBehaviour
 {
     // Start is called before the first frame update
-    Animator animator;
-    [SerializeField] private GameObject obj;
+    Animator cageAnimator;
+    Animator prisonerAnimator;
+    [SerializeField] private GameObject CageObject;
+    [SerializeField] private GameObject PrisonerObject;
 
     void Awake () {
-        animator = obj.GetComponent<Animator>();
+        cageAnimator = CageObject.GetComponent<Animator>();
+        prisonerAnimator = PrisonerObject.GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    private void OnTriggerStay  (Collider other) {
+    private void OnTriggerStay (Collider other) {
         if (other.CompareTag("Player")) {
             if (Input.GetKeyDown(KeyCode.E)) {
-                animator.SetBool("open", true);
+                cageAnimator.SetBool("open", true);
+                prisonerAnimator.SetBool("run", true);
             }
         }
     }

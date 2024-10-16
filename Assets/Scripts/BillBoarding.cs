@@ -9,7 +9,7 @@ public class BillBoarding : MonoBehaviour
 void Start()
 {
     mainCamera = Camera.main;
-     Cursor.lockState = CursorLockMode.Locked;
+    Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible = false;
 
 }
@@ -18,4 +18,5 @@ void LateUpdate()
 {
     transform.rotation = mainCamera.transform.rotation;
 }
+
 }
