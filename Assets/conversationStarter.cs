@@ -12,7 +12,7 @@ public class conversationStarter : MonoBehaviour
 
     void Awake() {
         animator = obj.GetComponent<Animator>();
-        //convManagerInst = ConversationManager.Instance;
+        // convManagerInst = ConversationManager.Instance;
         // Initializes stuff.
         convManagerInst.FakeStartConversation(myConv);
         convManagerInst.EndConversation();
