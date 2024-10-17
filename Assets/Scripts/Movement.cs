@@ -24,6 +24,8 @@ public class Movement : MonoBehaviour
     public bool isGrounded = false;
     private float cameraPitch = 0.0f;
 
+    public Stats statsRef;
+
     public float underwaterGravityMultiplier = 0.3f;
     public float jumpForce = 5.0f;
     public bool isJumping = false;
@@ -32,6 +34,8 @@ public class Movement : MonoBehaviour
     public float jumpDuration = 0.2f;
 
     public PlayerAttack playerStats;
+
+    public AudioSource footstepsSounds;
 
     void Start()
     {
@@ -97,6 +101,12 @@ void Update()
         animator.SetBool("Space_Pressed", false);
     }
 
+    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
+        footstepsSounds.enabled = true;
+    } else {
+        footstepsSounds.enabled = false;
+    }
+
     // Apply gravity or buoyancy
     if (isUnderwater)
     {
@@ -121,11 +131,12 @@ void Update()
         {
             moveDirection.y = rb.velocity.y - gravityForce * Time.deltaTime;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && isGrounded) // Check for jump input
+        else if (Input.GetKeyDown(KeyCode.Space) && isGrounded && (statsRef.currentHunger >= 5 )) // Check for jump input
         {
             isJumping = true;
             jumpTimeCounter = 0.0f;
             Debug.Log("Jumping");
+            statsRef.TakeHunger(5);
         }
     }
     if(playerStats.isDashing) { 

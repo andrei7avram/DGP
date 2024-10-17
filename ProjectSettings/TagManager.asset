@@ -9,6 +9,8 @@ TagManager:
   - Hazard
   - Projectile
   - EnemyAttack
+  - Edible
+  - PlayerAttack
   layers:
   - Default
   - TransparentFX

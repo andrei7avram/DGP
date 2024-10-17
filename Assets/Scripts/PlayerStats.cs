@@ -4,6 +4,8 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     public GameObject attackPrefab;
+
+    public Stats statsRef;
     public float attackCooldown = 0.5f;
 
     public float lungeForce = 3f;
@@ -51,10 +53,11 @@ public class PlayerAttack : MonoBehaviour
         //GetComponent<Collider>().material = noFrictionMaterial;
 
         Vector3 lungeDirection = CalculateLungeDirection();
-        if(!movement.isGrounded) 
+        if(!movement.isGrounded && statsRef.currentHunger >= 5) 
         {
             isDashing = true;
             rb.AddForce(lungeDirection, ForceMode.Impulse);
+            statsRef.TakeHunger(5);
             dashTimeCounter = 0f;
         }
 
