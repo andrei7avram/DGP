@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: 8080934c157df9a4fb36ce826ec3cdae, type: 3}
       propertyPath: m_Name
-      value: Fence_Full_02
+      value: Fence_Full_02_Collider
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 8080934c157df9a4fb36ce826ec3cdae, type: 3}
       propertyPath: m_LocalPosition.x
@@ -59,6 +59,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 8080934c157df9a4fb36ce826ec3cdae, type: 3}
       insertIndex: -1
       addedObject: {fileID: 998583747560023200}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 8080934c157df9a4fb36ce826ec3cdae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9140843542930435794}
   m_SourcePrefab: {fileID: 100100000, guid: 8080934c157df9a4fb36ce826ec3cdae, type: 3}
 --- !u!1 &1153811223622622950 stripped
 GameObject:
@@ -86,3 +89,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.9748801, y: 0.586651, z: 0.16088277}
   m_Center: {x: 0, y: -5.293956e-23, z: -0.0000000037252903}
+--- !u!208 &9140843542930435794
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153811223622622950}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.48700002, y: 0.293, z: 0.35}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
