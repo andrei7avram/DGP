@@ -195,10 +195,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1700525827}
     - target: {fileID: 2701877348485286710, guid: 498b595b1e9b1d94485b738c9e081347, type: 3}
-      propertyPath: Hearts.Array.size
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701877348485286710, guid: 498b595b1e9b1d94485b738c9e081347, type: 3}
       propertyPath: Hearts.Array.data[0]
       value: 
       objectReference: {fileID: 21498338}
@@ -238,22 +234,6 @@ PrefabInstance:
       propertyPath: Hearts.Array.data[9]
       value: 
       objectReference: {fileID: 1172971835}
-    - target: {fileID: 2701877348485286710, guid: 498b595b1e9b1d94485b738c9e081347, type: 3}
-      propertyPath: HeartSprites.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 2701877348485286710, guid: 498b595b1e9b1d94485b738c9e081347, type: 3}
-      propertyPath: HeartSprites.Array.data[0]
-      value: 
-      objectReference: {fileID: 21300000, guid: 50f8de6ae996f3a43924b4c08dd6d623, type: 3}
-    - target: {fileID: 2701877348485286710, guid: 498b595b1e9b1d94485b738c9e081347, type: 3}
-      propertyPath: HeartSprites.Array.data[1]
-      value: 
-      objectReference: {fileID: 21300000, guid: 7f9dd4472ca5dcb43bc506f89ea962d1, type: 3}
-    - target: {fileID: 2701877348485286710, guid: 498b595b1e9b1d94485b738c9e081347, type: 3}
-      propertyPath: HeartSprites.Array.data[2]
-      value: 
-      objectReference: {fileID: 21300000, guid: d667c265dd1127547a97a87dfdc0e89c, type: 3}
     - target: {fileID: 4881025981463364070, guid: 498b595b1e9b1d94485b738c9e081347, type: 3}
       propertyPath: m_Name
       value: Player
