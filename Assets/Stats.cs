@@ -25,6 +25,8 @@ public class Stats : MonoBehaviour
 
     private bool timeToTake = false;
 
+    public PlayerAttack playerStats;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -119,18 +121,18 @@ public class Stats : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (collision.gameObject.tag == "Projectile") {
+        if (collision.gameObject.tag == "Projectile" && !playerStats.isShielded) {
             Debug.Log("Projectile hit player");
             TakeDamage(35);
             Destroy(collision.gameObject);
-        }else if (collision.gameObject.tag == "Hazard") {
+        }else if (collision.gameObject.tag == "Hazard" && !playerStats.isShielded) {
             Debug.Log("Hazard hit player");
             TakeDamage(15);
         }
     }
 
     void OnTriggerEnter(Collider other) {
-        if (other.gameObject.tag == "EnemyAttack") {
+        if (other.gameObject.tag == "EnemyAttack" && !playerStats.isShielded) {
             TakeDamage(10);
         }else if (other.gameObject.tag == "Edible") {
             TakeHunger(-20);

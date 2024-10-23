@@ -17,7 +17,8 @@ public class PlayerAttack : MonoBehaviour
 
     private bool canAttack = true;
     public Movement movement;
-
+    
+    public animatorScript animatorRef;
     public Rigidbody rb;
     private PhysicMaterial noFrictionMaterial;
     private PhysicMaterial defaultMaterial;
@@ -25,6 +26,9 @@ public class PlayerAttack : MonoBehaviour
     public bool isDashing = false;
 
     private float dashTimeCounter = 0f;
+    public bool isShielded = false;
+
+    public bool isShieldedAnim = false;
 
     private void Start()
     {
@@ -39,12 +43,21 @@ public class PlayerAttack : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
         // Only allow attacking if the turtle is grounded
-        if (Input.GetMouseButtonDown(0) && canAttack)
+        if (Input.GetMouseButtonDown(0) && canAttack && !isShieldedAnim)
         {   
             canAttack = false;
             StartCoroutine(AttackEnemy());
+        } else if (Input.GetKeyDown(KeyCode.LeftControl) && statsRef.currentHunger >= 5) 
+        {
+
+            statsRef.TakeHunger(5);
+            StartCoroutine(Shield(true));
+
+        } else if (Input.GetKeyUp(KeyCode.LeftControl)){
+
+            StartCoroutine(LoseShield(false));
         }
     }
 
@@ -114,6 +127,26 @@ public class PlayerAttack : MonoBehaviour
         }
 
         return transform.forward * lungeForce + transform.up * upwardForce;
+    }
+
+    IEnumerator Shield(bool shielded)
+    {   
+        isShieldedAnim = shielded;
+        animatorRef.animator.SetBool("CTRL_Pressed", true);
+        movement.enabled = false;
+        yield return new WaitForSeconds(0.4f);
+        isShielded = shielded;
+    }
+
+    IEnumerator LoseShield(bool shielded)
+    {   
+        isShielded = shielded;
+        animatorRef.animator.SetBool("CTRL_Pressed", false);
+        animatorRef.animator.SetBool("EXIT_Shield", true);
+        yield return new WaitForSeconds(1.25f);
+        animatorRef.animator.SetBool("EXIT_Shield", false);
+        movement.enabled = true;
+        isShieldedAnim = shielded;
     }
 
 }

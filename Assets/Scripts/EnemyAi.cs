@@ -83,8 +83,8 @@ public class EnemyAi : MonoBehaviour
         transform.LookAt(player);
 
         if (!alreadyAttacked) {
-            int attackType = Random.Range(0, 2);
-            if (attackType == 0) {
+            int attackType = Random.Range(0, 3);
+            if (attackType == 0 || attackType == 1) {
                 Debug.Log("Projectile Attack");
                 Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
                 Rigidbody rb = Instantiate(projectile, projectilePosition, Quaternion.identity).GetComponent<Rigidbody>();

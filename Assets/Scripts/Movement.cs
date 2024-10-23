@@ -13,8 +13,6 @@ public class Movement : MonoBehaviour
     [SerializeField]
     private SpriteRenderer sr;
 
-    public Animator animator;
-
     public ParticleSystem particles;
 
     public Sprite[] directionSprites;
@@ -37,6 +35,8 @@ public class Movement : MonoBehaviour
 
     public AudioSource footstepsSounds;
 
+    private bool isShielded = false;
+
     void Start()
     {
         var emission = particles.emission;
@@ -51,113 +51,84 @@ public class Movement : MonoBehaviour
 
 void Update()
 {
-    // Handle player movement
-    float moveX = Input.GetAxis("Horizontal");
-    float moveZ = Input.GetAxis("Vertical");
+        // Handle player movement
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
 
-    // Make particles
-    ParticleSystem.EmissionModule emission = particles.emission;
-    if(isGrounded) {
-        if (moveX != 0 || moveZ != 0) {
-            emission.enabled = true;
+        // Make particles
+        ParticleSystem.EmissionModule emission = particles.emission;
+        if(isGrounded) {
+            if (moveX != 0 || moveZ != 0) {
+                emission.enabled = true;
+            } else {
+                emission.enabled = false;
+            }
+        }
+
+        Vector3 move = transform.right * moveX + transform.forward * moveZ;
+        moveDirection = move * playerSpeed;
+
+        
+
+
+        // Modify variables for animation
+    
+        
+
+        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
+            footstepsSounds.enabled = true;
         } else {
-            emission.enabled = false;
+            footstepsSounds.enabled = false;
         }
-    }
 
-    Vector3 move = transform.right * moveX + transform.forward * moveZ;
-    moveDirection = move * playerSpeed;
-
-
-    // Modify variables for animation
-    if (Input.GetKeyDown(KeyCode.W)) {
-        animator.SetBool("W_Pressed", true);
-    }
-    if (Input.GetKeyDown(KeyCode.A)) {
-        animator.SetBool("A_Pressed", true);
-    }
-    if (Input.GetKeyDown(KeyCode.S)) {
-        animator.SetBool("S_Pressed", true);
-    }
-    if (Input.GetKeyDown(KeyCode.D)) {
-        animator.SetBool("D_Pressed", true);
-    }
-    if (Input.GetKeyUp(KeyCode.W)) {
-        animator.SetBool("W_Pressed", false);
-    }
-    if (Input.GetKeyUp(KeyCode.A)) {
-        animator.SetBool("A_Pressed", false);
-    }
-    if (Input.GetKeyUp(KeyCode.S)) {
-        animator.SetBool("S_Pressed", false);
-    }
-    if (Input.GetKeyUp(KeyCode.D)) {
-        animator.SetBool("D_Pressed", false);
-    }
-    if (Input.GetKeyDown(KeyCode.Space)) {
-        animator.SetBool("Space_Pressed", true);
-    }
-    if (Input.GetKeyUp(KeyCode.Space)) {
-        animator.SetBool("Space_Pressed", false);
-    }
-
-    if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
-        footstepsSounds.enabled = true;
-    } else {
-        footstepsSounds.enabled = false;
-    }
-
-    // Apply gravity or buoyancy
-    if (isUnderwater)
-    {
-        // Handle rising and submerging
-        if (Input.GetKey(KeyCode.Space))
+        // Apply gravity or buoyancy
+        if (isUnderwater)
         {
-            moveDirection.y = playerSpeed;
-        }
-        else if (Input.GetKey(KeyCode.LeftControl))
-        {
-            moveDirection.y = -playerSpeed;
+            // Handle rising and submerging
+            if (Input.GetKey(KeyCode.Space))
+            {
+                moveDirection.y = playerSpeed;
+            }
+            else if (Input.GetKey(KeyCode.LeftControl))
+            {
+                moveDirection.y = -playerSpeed;
+            }
+            else
+            {
+                moveDirection.y -= gravityForce * underwaterGravityMultiplier * Time.deltaTime;
+            }
         }
         else
         {
-            moveDirection.y -= gravityForce * underwaterGravityMultiplier * Time.deltaTime;
+            
+            if (!isGrounded)
+            {
+                moveDirection.y = rb.velocity.y - gravityForce * Time.deltaTime;
+            }
+            else if (Input.GetKeyDown(KeyCode.Space) && isGrounded && (statsRef.currentHunger >= 5 )) // Check for jump input
+            {
+                isJumping = true;
+                jumpTimeCounter = 0.0f;
+                Debug.Log("Jumping");
+                statsRef.TakeHunger(5);
+            }
         }
-    }
-    else
-    {
-        
-        if (!isGrounded)
-        {
-            moveDirection.y = rb.velocity.y - gravityForce * Time.deltaTime;
+        if(playerStats.isDashing || playerStats.isShieldedAnim) { 
+            rb.velocity = new Vector3(rb.velocity.x, moveDirection.y, rb.velocity.z);
+        }else if (!playerStats.isShieldedAnim) {
+            rb.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && isGrounded && (statsRef.currentHunger >= 5 )) // Check for jump input
-        {
-            isJumping = true;
-            jumpTimeCounter = 0.0f;
-            Debug.Log("Jumping");
-            statsRef.TakeHunger(5);
-        }
-    }
-    if(playerStats.isDashing) { 
-        rb.velocity = new Vector3(rb.velocity.x, moveDirection.y, rb.velocity.z);
-    }else {
-        rb.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
-    }
     
+        // Handle camera rotation
+        float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
+        float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
 
-    
+        // Rotate the camera around the character
+        cameraPitch -= mouseY;
+        cameraPitch = Mathf.Clamp(cameraPitch, -90f, 90f);
 
-    // Handle camera rotation
-    float mouseX = Input.GetAxis("Mouse X") * lookSpeed;
-    float mouseY = Input.GetAxis("Mouse Y") * lookSpeed;
-
-    // Rotate the camera around the character
-    cameraPitch -= mouseY;
-    cameraPitch = Mathf.Clamp(cameraPitch, -90f, 90f);
-
-    cameraTransform.localEulerAngles = new Vector3(cameraPitch, 0.0f, 0.0f);
-    transform.Rotate(Vector3.up * mouseX);
+        cameraTransform.localEulerAngles = new Vector3(cameraPitch, 0.0f, 0.0f);
+        transform.Rotate(Vector3.up * mouseX);
 }
 
 void FixedUpdate()
