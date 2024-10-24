@@ -28,6 +28,7 @@ public class PauseMenuScript : MonoBehaviour
         pauseMenu.GetComponent<Canvas>().enabled = true;
         movementRef.enabled = false;
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         inputManagerRef.SetActive(false);
         isPaused = true;
         Time.timeScale = 0f;
@@ -38,6 +39,7 @@ public class PauseMenuScript : MonoBehaviour
         movementRef.enabled = true;
         inputManagerRef.SetActive(true);
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         isPaused = false;
         Time.timeScale = 1f;
         pauseMenu.GetComponent<Canvas>().enabled = false;
@@ -45,6 +47,7 @@ public class PauseMenuScript : MonoBehaviour
 
     public void quitGame() {
         Debug.Log("Quitting game");
+        Cursor.visible = true;
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
     }

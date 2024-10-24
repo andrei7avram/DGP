@@ -61,7 +61,7 @@ public class DayAndNightControl : MonoBehaviour {
 
 	void UpdateLight()
 	{
-		StarDome.transform.Rotate (new Vector3 (0, 2f * Time.deltaTime, 0));
+		StarDome.transform.Rotate (new Vector3 (0, 1f * Time.deltaTime, 0));
 		moon.transform.LookAt (targetCam.transform);
 		directionalLight.transform.localRotation = Quaternion.Euler ((currentTime * 360f) - 90, 170, 0);
 		moonState.transform.localRotation = Quaternion.Euler ((currentTime * 360f) - 100, 170, 0);
