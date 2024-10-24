@@ -14,7 +14,7 @@ public class conversationStarter : MonoBehaviour
         animator = obj.GetComponent<Animator>();
         // convManagerInst = ConversationManager.Instance;
         // Initializes stuff.
-        convManagerInst.FakeStartConversation(myConv);
+        // convManagerInst.FakeStartConversation(myConv);
         convManagerInst.EndConversation();
     }
 

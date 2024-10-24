@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class Stats : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class Stats : MonoBehaviour
 
     public PlayerAttack playerStats;
 
+    public TextMeshProUGUI text;
+    public int hermitsSaved = 0;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -44,7 +48,7 @@ public class Stats : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("World");
         }
 
         UpdateHearts();
@@ -120,6 +124,13 @@ public class Stats : MonoBehaviour
         }
     }
 
+
+    public void updateHermits() {
+        Debug.Log("Hermit saved");
+        hermitsSaved++;
+        text.text = ": " + hermitsSaved;
+    }
+
     void OnCollisionEnter(Collision collision) {
         if (collision.gameObject.tag == "Projectile" && !playerStats.isShielded) {
             Debug.Log("Projectile hit player");
@@ -137,6 +148,11 @@ public class Stats : MonoBehaviour
         }else if (other.gameObject.tag == "Edible") {
             TakeHunger(-20);
             other.gameObject.SetActive(false);
+        }else if (other.gameObject.tag == "Hermit")
+        {   
+            updateHermits();
+            other.gameObject.GetComponent<Collider>().enabled = false;
+            // Destroy(other.gameObject);
         }
     }
 }

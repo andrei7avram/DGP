@@ -47,6 +47,8 @@ public class Movement : MonoBehaviour
         {
             cameraTransform = Camera.main.transform;
         }
+
+        Cursor.lockState = CursorLockMode.None;
     }
 
 void Update()

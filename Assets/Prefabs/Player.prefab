@@ -446,6 +446,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b2cff01b7f4b5194586c2914401b4993, type: 3}
   - {fileID: 21300000, guid: eb75bdd449ad9d04ba657427fb61f437, type: 3}
   playerStats: {fileID: 7048830633445456472}
+  text: {fileID: 0}
+  hermitsSaved: 0
 --- !u!82 &3453435735302403148
 AudioSource:
   m_ObjectHideFlags: 0
@@ -967,6 +969,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2915827312882785290, guid: b655378ca4c3b09488c5206ff0314d02, type: 3}
+      propertyPath: m_TagString
+      value: PlayerAttack
+      objectReference: {fileID: 0}
     - target: {fileID: 5232890922384377188, guid: b655378ca4c3b09488c5206ff0314d02, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.136
@@ -1018,6 +1024,10 @@ PrefabInstance:
     - target: {fileID: 7079789483930906642, guid: b655378ca4c3b09488c5206ff0314d02, type: 3}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7079789483930906642, guid: b655378ca4c3b09488c5206ff0314d02, type: 3}
+      propertyPath: m_ExcludeLayers.m_Bits
+      value: 16384
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

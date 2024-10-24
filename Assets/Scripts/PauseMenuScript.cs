@@ -10,7 +10,7 @@ public class PauseMenuScript : MonoBehaviour
     public GameObject inputManagerRef;
     void Start()
     {
-        pauseMenu.SetActive(false);
+        movementRef = GameObject.Find("Player").GetComponent<Movement>();
     }
 
     void Update() {
@@ -23,18 +23,21 @@ public class PauseMenuScript : MonoBehaviour
         }
     }
     public void pauseGame() {
-        pauseMenu.SetActive(true);
+        pauseMenu.GetComponent<Canvas>().enabled = true;
         movementRef.enabled = false;
+        Cursor.lockState = CursorLockMode.None;
         inputManagerRef.SetActive(false);
         isPaused = true;
         Time.timeScale = 0f;
     }
 
     public void resumeGame() {
-        pauseMenu.SetActive(false);
+        Debug.Log("Resuming game");
         movementRef.enabled = true;
         inputManagerRef.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked;
         isPaused = false;
         Time.timeScale = 1f;
+        pauseMenu.GetComponent<Canvas>().enabled = false;
     }
 }

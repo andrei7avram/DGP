@@ -61,7 +61,7 @@ public class EnemyAi : MonoBehaviour
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-        if (Physics.Raycast(walkPoint, -transform.up, 4f, whatIsGround)) walkPointSet = true;
+        if (Physics.Raycast(walkPoint, -transform.up, 5f, whatIsGround)) walkPointSet = true;
     }
 
     private void Chasing() {

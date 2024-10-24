@@ -108,7 +108,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 189503766695803395}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 436.96, y: 390.79, z: 59.02}
   m_LocalScale: {x: 0.54, y: 0.54, z: 0.54}
   m_ConstrainProportionsScale: 1
@@ -329,7 +329,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1257950756, guid: b5f831ecc4e61064a9a2b44199803be1, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 92ffe9e37f4725d4f84302a29a126080, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -350,7 +350,7 @@ Animator:
   m_GameObject: {fileID: 2904445623512983394}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: bb80ffcab099c174282db629e5656804, type: 2}
+  m_Controller: {fileID: 9100000, guid: bf00c87e48cda184a8eda64567dea684, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -929,6 +929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c844b6ffe7f17b7458cc49006a71270e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 0}
   CageObject: {fileID: 189503766695803395}
   PrisonerObject: {fileID: 346307859210650792}
 --- !u!1 &6768781956126028715
