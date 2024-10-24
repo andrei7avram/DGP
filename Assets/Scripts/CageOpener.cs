@@ -32,6 +32,7 @@ public class CageOpener : MonoBehaviour
                 stats.updateHermits();
                 helpText.enabled = false;
                 prisonerAnimator.SetBool("run", true);
+                Destroy(PrisonerObject, 6);
                 
                 isCageOpen = true;
             }

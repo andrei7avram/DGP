@@ -40,5 +40,15 @@ public class animatorScript : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space)) {
             animator.SetBool("Space_Pressed", false);
         }
+        if (Input.GetMouseButtonDown(0)) {
+            animator.SetBool("MOUSE1_Pressed", true);
+            StartCoroutine(ResetAttack());
+        }
+        
+    }
+
+    IEnumerator ResetAttack() {
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("MOUSE1_Pressed", false);
     }
 }

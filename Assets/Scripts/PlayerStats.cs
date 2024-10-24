@@ -30,6 +30,8 @@ public class PlayerAttack : MonoBehaviour
 
     public bool isShieldedAnim = false;
 
+    public bool isAttacking = false;
+
     private void Start()
     {
         // Cache default material and create a no-friction material for lunge
@@ -45,17 +47,17 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {   
         // Only allow attacking if the turtle is grounded
-        if (Input.GetMouseButtonDown(0) && canAttack && !isShieldedAnim)
-        {   
+        if (Input.GetMouseButtonDown(0) && canAttack && !isShieldedAnim && movement.IsInAttackPosition()) {   
+
             canAttack = false;
             StartCoroutine(AttackEnemy());
-        } else if (Input.GetKeyDown(KeyCode.LeftControl) && statsRef.currentHunger >= 5) 
-        {
+
+        } else if (Input.GetKeyDown(KeyCode.LeftControl) && statsRef.currentHunger >= 5) {
 
             statsRef.TakeHunger(5);
             StartCoroutine(Shield(true));
 
-        } else if (Input.GetKeyUp(KeyCode.LeftControl)){
+        } else if (Input.GetKeyUp(KeyCode.LeftControl)) {
 
             StartCoroutine(LoseShield(false));
         }
@@ -64,7 +66,7 @@ public class PlayerAttack : MonoBehaviour
     IEnumerator AttackEnemy()
     {
         //GetComponent<Collider>().material = noFrictionMaterial;
-
+        isAttacking = true;
         Vector3 lungeDirection = CalculateLungeDirection();
         if(!movement.isGrounded && statsRef.currentHunger >= 5) 
         {
@@ -75,6 +77,8 @@ public class PlayerAttack : MonoBehaviour
         }
 
         attackPrefab.GetComponent<Collider>().enabled = true;
+        movement.rb.velocity = Vector3.zero;
+        //movement.enabled = false;
 
         yield return new WaitForSeconds(lungeDuration);  // Wait for the duration of the lunge
 
@@ -82,7 +86,9 @@ public class PlayerAttack : MonoBehaviour
 
         yield return new WaitForSeconds(attackCooldown - lungeDuration);  // Wait for cooldown
 
+        //movement.enabled = true;
         attackPrefab.GetComponent<Collider>().enabled = false;
+        isAttacking = false;
         canAttack = true;
     }
 

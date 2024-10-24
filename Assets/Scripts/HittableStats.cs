@@ -9,6 +9,10 @@ public class HittableStats : MonoBehaviour
     public float maxHealth = 100f;
     public float currentHealth;
 
+    public AudioSource audioSource;
+
+    public AudioClip painSound;
+
     public Image HealthBar;
 
     // Static variable to ensure "First Blood" is unlocked only once
@@ -22,6 +26,11 @@ public class HittableStats : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        if (audioSource != null && painSound != null)
+        {
+            audioSource.PlayOneShot(painSound);
+        }
 
         // Update the health bar UI
         HealthBar.fillAmount = currentHealth / maxHealth;

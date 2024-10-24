@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1770269510090724337}
   serializedVersion: 2
   m_LocalRotation: {x: 0.14765039, y: -0, z: -0, w: 0.98903966}
-  m_LocalPosition: {x: -0.22, y: 1.2, z: -2.53}
+  m_LocalPosition: {x: -0.118, y: 1.371, z: -2.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -66,7 +66,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.2
-  far clip plane: 2000
+  far clip plane: 5000
   field of view: 60
   orthographic: 0
   orthographic size: 5
@@ -165,7 +165,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.209, z: 0}
-  m_LocalScale: {x: 1.8999999, y: 2.534262, z: 2.5319824}
+  m_LocalScale: {x: 3, y: 4.0014668, z: 3.9978676}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7306629819527203230}
@@ -211,7 +211,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b92c1169dacc1a34483fb0bc6d4eb021, type: 3}
+  m_Sprite: {fileID: 243358434, guid: a23f31966b8d9284f939dc7b8a631930, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -260,6 +260,7 @@ GameObject:
   - component: {fileID: 3453435735302403148}
   - component: {fileID: 3520603071312025738}
   - component: {fileID: 5524735073249439873}
+  - component: {fileID: 796189768978178633}
   m_Layer: 11
   m_Name: Player
   m_TagString: Player
@@ -277,7 +278,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 454.12, y: 397.572, z: 39.922}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.63, y: 1.63, z: 1.63}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2072066933118494367}
@@ -294,9 +295,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4881025981463364070}
   serializedVersion: 4
-  m_Mass: 10
+  m_Mass: 8
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -312,7 +313,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!136 &5268469977977050060
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -332,10 +333,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.39556026
-  m_Height: 0.7911205
-  m_Direction: 0
-  m_Center: {x: -0.09170532, y: 0.2320714, z: -0.030510902}
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &9103567573823295192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -364,12 +365,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 510add1a97aecd64d913f6bcaea21662, type: 3}
   isGrounded: 0
   statsRef: {fileID: 2701877348485286710}
+  animator: {fileID: 8050782421937480707}
   underwaterGravityMultiplier: 0.9
   jumpForce: 50
   isJumping: 0
   jumpDuration: 0.2
   playerStats: {fileID: 7048830633445456472}
   footstepsSounds: {fileID: 3453435735302403148}
+  isOnLadder: 0
 --- !u!114 &7048830633445456472
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,7 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attackPrefab: {fileID: 7248834969499271338}
   statsRef: {fileID: 2701877348485286710}
-  attackCooldown: 0.5
+  attackCooldown: 1
   lungeForce: 50
   upwardForce: 0
   lungeDuration: 0.5
@@ -398,6 +401,7 @@ MonoBehaviour:
   isDashing: 0
   isShielded: 0
   isShieldedAnim: 0
+  isAttacking: 0
 --- !u!114 &2701877348485286710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -654,6 +658,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8050782421937480707}
   playerStats: {fileID: 7048830633445456472}
+--- !u!136 &796189768978178633
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4881025981463364070}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.3696028
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.05482867, z: 0}
 --- !u!1001 &4401067922308660859
 PrefabInstance:
   m_ObjectHideFlags: 0

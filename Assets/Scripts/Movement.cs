@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using System.Collections;
 
 public class Movement : MonoBehaviour
 {
@@ -24,6 +25,8 @@ public class Movement : MonoBehaviour
 
     public Stats statsRef;
 
+    public Animator animator;
+
     public float underwaterGravityMultiplier = 0.3f;
     public float jumpForce = 5.0f;
     public bool isJumping = false;
@@ -36,6 +39,8 @@ public class Movement : MonoBehaviour
     public AudioSource footstepsSounds;
 
     private bool isShielded = false;
+
+    public bool isOnLadder = false;
 
     void Start()
     {
@@ -50,13 +55,27 @@ public class Movement : MonoBehaviour
 
     }
 
+     public bool IsInAttackPosition()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // Assuming "Forward", "ForwardRight", and "ForwardLeft" are the names of the animation states
+        bool isInForward = stateInfo.IsName("turtle_back_walking") || stateInfo.IsName("turtle_back_idle");
+        bool isInForwardRight = stateInfo.IsName("turtle_WD_walking") || stateInfo.IsName("turtle_WD_idle");
+        bool isInForwardLeft = stateInfo.IsName("turtle_WA_walking") || stateInfo.IsName("turtle_WA_idle");
+        bool isInLeft = stateInfo.IsName("turtle_left_walking") || stateInfo.IsName("turtle_left_idle");
+        bool isInRight = stateInfo.IsName("turtle_right_walking") || stateInfo.IsName("turtle_right_idle");
+
+        return isInForward || isInForwardRight || isInForwardLeft || isInLeft || isInRight;
+    }
+
 void Update()
 {
-        // Handle player movement
+        
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
 
-        // Make particles
+        
         ParticleSystem.EmissionModule emission = particles.emission;
         if(isGrounded) {
             if (moveX != 0 || moveZ != 0) {
@@ -69,12 +88,6 @@ void Update()
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         moveDirection = move * playerSpeed;
 
-        
-
-
-        // Modify variables for animation
-    
-        
 
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D)) {
             footstepsSounds.enabled = true;
@@ -82,41 +95,56 @@ void Update()
             footstepsSounds.enabled = false;
         }
 
-        // Apply gravity or buoyancy
-        if (isUnderwater)
-        {
-            // Handle rising and submerging
-            if (Input.GetKey(KeyCode.Space))
-            {
-                moveDirection.y = playerSpeed;
+            if (isOnLadder) {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    moveDirection.y = playerSpeed*2;
+                }
+                else if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    moveDirection.y = -playerSpeed;
+                }
+                else
+                {
+                    moveDirection.y = 0;
+                }
             }
-            else if (Input.GetKey(KeyCode.LeftControl))
+        else
+        {
+            // Apply gravity or buoyancy
+            if (isUnderwater)
             {
-                moveDirection.y = -playerSpeed;
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    moveDirection.y = playerSpeed;
+                }
+                else if (Input.GetKey(KeyCode.LeftControl))
+                {
+                    moveDirection.y = -playerSpeed;
+                }
+                else
+                {
+                    moveDirection.y -= gravityForce * underwaterGravityMultiplier * Time.deltaTime;
+                }
             }
             else
             {
-                moveDirection.y -= gravityForce * underwaterGravityMultiplier * Time.deltaTime;
+                if (!isGrounded)
+                {
+                    moveDirection.y = rb.velocity.y - gravityForce * Time.deltaTime;
+                }
+                else if (Input.GetKeyDown(KeyCode.Space) && isGrounded && (statsRef.currentHunger >= 5))
+                {
+                    isJumping = true;
+                    isGrounded = false;
+                    statsRef.TakeHunger(5);
+                    jumpTimeCounter = 0.0f;
+                }
             }
         }
-        else
-        {
-            
-            if (!isGrounded)
-            {
-                moveDirection.y = rb.velocity.y - gravityForce * Time.deltaTime;
-            }
-            else if (Input.GetKeyDown(KeyCode.Space) && isGrounded && (statsRef.currentHunger >= 5 )) // Check for jump input
-            {
-                isJumping = true;
-                jumpTimeCounter = 0.0f;
-                Debug.Log("Jumping");
-                statsRef.TakeHunger(5);
-            }
-        }
-        if(playerStats.isDashing || playerStats.isShieldedAnim) { 
+        if(playerStats.isDashing || playerStats.isShieldedAnim || playerStats.isAttacking || isOnLadder) { 
             rb.velocity = new Vector3(rb.velocity.x, moveDirection.y, rb.velocity.z);
-        }else if (!playerStats.isShieldedAnim) {
+        }else if (!playerStats.isShieldedAnim && !playerStats.isAttacking) {
             rb.velocity = new Vector3(moveDirection.x, moveDirection.y, moveDirection.z);
         }
     
@@ -130,22 +158,31 @@ void Update()
 
         cameraTransform.localEulerAngles = new Vector3(cameraPitch, 0.0f, 0.0f);
         transform.Rotate(Vector3.up * mouseX);
+
 }
 
 void FixedUpdate()
 {
     if (isJumping)
-    {
-        if (jumpTimeCounter < jumpDuration)
+    {   
+        StartCoroutine(Jump());
+    }
+}
+
+IEnumerator Jump()
+{
+   if (jumpTimeCounter < jumpDuration)
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Acceleration);
+            
             jumpTimeCounter += Time.fixedDeltaTime;
         }
         else
         {
             isJumping = false;
         }
-    }
+        
+    yield return null;
 }
 
 void OnCollisionEnter(Collision collision)
@@ -153,6 +190,9 @@ void OnCollisionEnter(Collision collision)
     if (collision.gameObject.CompareTag("Ground"))
     {
         isGrounded = true;
+    } else if (collision.gameObject.CompareTag("ladder"))
+    {
+        isOnLadder = true;
     }
 }
 
@@ -161,6 +201,9 @@ void OnCollisionExit(Collision collision)
     if (collision.gameObject.CompareTag("Ground"))
     {
         isGrounded = false;
+    } else if (collision.gameObject.CompareTag("ladder"))
+    {
+        isOnLadder = false;
     }
 }
 

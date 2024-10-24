@@ -72,42 +72,48 @@ public class EnemyAi : MonoBehaviour
 
         if (meleeAttackActive) {
             Debug.Log("Melee Attack Hit");
+            meleeAttack.GetComponent<Collider>().enabled = true;
+            animator.SetBool("crab_attacking" , true);
             Debug.Log(distanceToPlayer.magnitude);
             alreadyAttacked = true;
+            StartCoroutine(MeleeAttack());
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
             meleeAttackActive = false;
-        }
-        animator.SetBool("crab_move" , false);
-        animator.SetBool("crab_idle", true);
-        agent.SetDestination(transform.position);
-        transform.LookAt(player);
+        } else {
+            animator.SetBool("crab_move" , false);
+            animator.SetBool("crab_idle", true);
+            agent.SetDestination(transform.position);
+            transform.LookAt(player);
 
-        if (!alreadyAttacked) {
-            int attackType = Random.Range(0, 3);
-            if (attackType == 0 || attackType == 1) {
-                Debug.Log("Projectile Attack");
-                Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
-                Rigidbody rb = Instantiate(projectile, projectilePosition, Quaternion.identity).GetComponent<Rigidbody>();
-                rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
-                rb.AddForce(transform.up * 2f, ForceMode.Impulse);
-                alreadyAttacked = true;
-                Invoke(nameof(ResetAttack), timeBetweenAttacks);
-            }else {
-                Debug.Log("Melee Attack");
-                meleeAttack.GetComponent<Collider>().enabled = true;
-                attackRange = 1f;
-                meleeAttackActive = true;
-
+            if (!alreadyAttacked) {
+                int attackType = Random.Range(0, 3);
+                if (attackType == 0 || attackType == 1) {
+                    Debug.Log("Projectile Attack");
+                    animator.SetBool("crab_attacking" , true);
+                    Vector3 projectilePosition = new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z);
+                    Rigidbody rb = Instantiate(projectile, projectilePosition, Quaternion.identity).GetComponent<Rigidbody>();
+                    rb.AddForce(transform.forward * 10f, ForceMode.Impulse);
+                    rb.AddForce(transform.up * 2f, ForceMode.Impulse);
+                    alreadyAttacked = true;
+                    StartCoroutine(MeleeAttack());
+                    Invoke(nameof(ResetAttack), timeBetweenAttacks);
+                }else {
+                    Debug.Log("Melee Attack");
+                    attackRange = 2f;
+                    meleeAttackActive = true;
+                }
+                
             }
-            
         }
+        
     }
 
     IEnumerator MeleeAttack() {
-        yield return new WaitForSeconds(1f);
-        meleeAttack.GetComponent<Collider>().enabled = true;
-        Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        yield return new WaitForSeconds(0.5f);
+        animator.SetBool("crab_attacking" , false);
     }
+
+    
 
     private void ResetAttack() {
         alreadyAttacked = false;

@@ -12,6 +12,7 @@ TagManager:
   - Edible
   - PlayerAttack
   - Hermit
+  - ladder
   layers:
   - Default
   - TransparentFX

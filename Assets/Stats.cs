@@ -152,7 +152,7 @@ public class Stats : MonoBehaviour
         {   
             updateHermits();
             other.gameObject.GetComponent<Collider>().enabled = false;
-            // Destroy(other.gameObject);
+            Destroy(other.gameObject, 6);
         }
     }
 }
