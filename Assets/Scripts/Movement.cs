@@ -48,7 +48,6 @@ public class Movement : MonoBehaviour
             cameraTransform = Camera.main.transform;
         }
 
-        Cursor.lockState = CursorLockMode.None;
     }
 
 void Update()
@@ -127,7 +126,7 @@ void Update()
 
         // Rotate the camera around the character
         cameraPitch -= mouseY;
-        cameraPitch = Mathf.Clamp(cameraPitch, -90f, 90f);
+        cameraPitch = Mathf.Clamp(cameraPitch, -45f, 45f);
 
         cameraTransform.localEulerAngles = new Vector3(cameraPitch, 0.0f, 0.0f);
         transform.Rotate(Vector3.up * mouseX);
