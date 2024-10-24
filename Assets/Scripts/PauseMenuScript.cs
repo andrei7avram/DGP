@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PauseMenuScript : MonoBehaviour
 {
     public GameObject pauseMenu;
     public static bool isPaused = false;
     public Movement movementRef;
     public GameObject inputManagerRef;
+
+
     void Start()
     {
         movementRef = GameObject.Find("Player").GetComponent<Movement>();
@@ -39,5 +41,11 @@ public class PauseMenuScript : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
         pauseMenu.GetComponent<Canvas>().enabled = false;
+    }
+
+    public void quitGame() {
+        Debug.Log("Quitting game");
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 }
