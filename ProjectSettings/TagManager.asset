@@ -13,6 +13,7 @@ TagManager:
   - PlayerAttack
   - Hermit
   - ladder
+  - Bush
   layers:
   - Default
   - TransparentFX

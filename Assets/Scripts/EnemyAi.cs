@@ -12,6 +12,7 @@ public class EnemyAi : MonoBehaviour
     bool walkPointSet;
     public float walkPointRange;
 
+
     public GameObject meleeAttack;
 
     public float timeBetweenAttacks;
@@ -22,15 +23,21 @@ public class EnemyAi : MonoBehaviour
     public Animator animator;
 
     public bool meleeAttackActive = false;
+    public Vector3 distanceToWalkPoint;
 
     //Attacks
     public GameObject projectile;
+
+    public Stats movement;
 
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
     private void Awake() {
         player = GameObject.Find("Player").transform;
+
+        movement = GameObject.Find("Player").GetComponent<Stats>();
+
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -40,20 +47,34 @@ public class EnemyAi : MonoBehaviour
 
         distanceToPlayer = transform.position - player.position;
 
-        if (!playerInSightRange && !playerInAttackRange) Patrolling();
-        if (playerInSightRange && !playerInAttackRange) Chasing();
-        if (playerInSightRange && playerInAttackRange) Attacking();
+        if ((!playerInSightRange && !playerInAttackRange) || movement.isHidden) Patrolling();
+        if (playerInSightRange && !playerInAttackRange && !movement.isHidden) Chasing();
+        if (playerInSightRange && playerInAttackRange && !movement.isHidden) Attacking();
     }
 
     private void Patrolling() {
+
         animator.SetBool("crab_idle" , false);
         animator.SetBool("crab_move" , true);
         if (!walkPointSet) SearchWalkPoint();
 
-        if (walkPointSet) agent.SetDestination(walkPoint);
+        if (walkPointSet)  {
+            agent.SetDestination(walkPoint);
+            
+        }
 
-        Vector3 distanceToWalkPoint = transform.position - walkPoint;
+        distanceToWalkPoint = transform.position - walkPoint;
         if (distanceToWalkPoint.magnitude < 2f) walkPointSet = false;
+    }
+
+    IEnumerator ResetWalkPoint() {
+        Vector3 copyWalkpoint = walkPoint;
+        yield return new WaitForSeconds(8f);
+        if(copyWalkpoint == walkPoint) {
+            walkPointSet = false;
+            copyWalkpoint = new Vector3(0, 0, 0);
+        }
+        
     }
 
     private void SearchWalkPoint() {
@@ -61,15 +82,16 @@ public class EnemyAi : MonoBehaviour
         float randomX = Random.Range(-walkPointRange, walkPointRange);
 
         walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+        StartCoroutine(ResetWalkPoint());
         if (Physics.Raycast(walkPoint, -transform.up, 5f, whatIsGround)) walkPointSet = true;
     }
 
     private void Chasing() {
         agent.SetDestination(player.position);
+    
     }
 
     private void Attacking() {
-
         if (meleeAttackActive) {
             Debug.Log("Melee Attack Hit");
             meleeAttack.GetComponent<Collider>().enabled = true;

@@ -31,6 +31,10 @@ public class Stats : MonoBehaviour
     public TextMeshProUGUI text;
     public int hermitsSaved = 0;
 
+    public HermitDiddy hermitDiddy;
+
+    public bool isHidden = false;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -129,6 +133,8 @@ public class Stats : MonoBehaviour
         Debug.Log("Hermit saved");
         hermitsSaved++;
         text.text = ": " + hermitsSaved;
+        hermitDiddy.AddHermit();
+        
     }
 
     void OnCollisionEnter(Collision collision) {
@@ -152,7 +158,14 @@ public class Stats : MonoBehaviour
         {   
             updateHermits();
             other.gameObject.GetComponent<Collider>().enabled = false;
-            Destroy(other.gameObject, 6);
+        }else if (other.gameObject.tag == "Bush") {
+            isHidden = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other) {
+        if (other.gameObject.tag == "Bush") {
+            isHidden = false;
         }
     }
 }
