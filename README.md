@@ -5,8 +5,8 @@
 
 Step into the shell of **Agent Shell**, a special operative of the IARS (International Animal Rescue Squad), on a mission to rescue the hermit crabs of Shellhaven from the ruthless **Claw Cartel**. With a blend of humor, heart, and heroism, Tide Rescue mixes narrative-driven exploration with lightweight combat in a vivid island world — all from a charming 2.5D perspective.
 
-📄 Read the full report here: [DZCZ Final Report](https://github.com/andrei7avram/DGP/blob/main/DZCZ%20final%20report.pdf)
-
+For full details about the design process and development of **Tide Rescue**, see the complete report:  
+👉 [DZC12 Final Report - Group 3](./DZC12-Final-report-gr-3.pdf)
 
 ---
 
